@@ -38,7 +38,7 @@ def scan_projects() -> dict:
     frontend_folder_name = "frontend"
     backend_folder_name = "backend"
     folders_to_scan = [frontend_folder_name, backend_folder_name]
-
+    print(folders_to_scan)
     for project in folders_to_scan:
         if os.path.isdir(project) and project not in excluded_dirs:
             files = [
@@ -76,7 +76,7 @@ def generate_dockerfile_with_openai(project_info: str) -> str:
     project_type = info["project_type"]
     port = info.get("port", 8000 if project_type == "backend" else 5173)
     server_file = "main.py" if project_type == "backend" else None
-
+    print(project_path)
     if project_type == "frontend":
         prompt = f"""
         Your task is to generate a **valid Dockerfile** for a frontend project named '{project_path}'.
