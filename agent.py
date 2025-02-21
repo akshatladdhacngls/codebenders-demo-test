@@ -74,7 +74,7 @@ def generate_dockerfile_with_openai(project_info: str) -> str:
     info = json.loads(project_info)
     project_path = info["project_path"]
     project_type = info["project_type"]
-    port = info.get("port", 8000 if project_type == "backend" else 3000)
+    port = info.get("port", 8000 if project_type == "backend" else 5173)
     server_file = "main.py" if project_type == "backend" else None
 
     if project_type == "frontend":
@@ -95,7 +95,7 @@ def generate_dockerfile_with_openai(project_info: str) -> str:
             COPY package*.json ./
             RUN npm install
             COPY . .
-            EXPOSE 3000
+            EXPOSE 5173
             CMD ["npm", "run", "dev"]
         """
     else:  # Backend
@@ -223,7 +223,7 @@ def setup_github_actions(project_data: dict) -> str:
     os.makedirs(workflow_dir, exist_ok=True)
     
     is_frontend = os.path.exists(os.path.join(project_path, "package.json"))
-    port_mapping = "3000:3000" if is_frontend else "8000:8000"
+    port_mapping = "5173:5173" if is_frontend else "8000:8000"
     
     # Generate a fixed workflow YAML without using LLM
     workflow_content = f"""name: Build and Deploy {project_name}
@@ -345,7 +345,7 @@ def run_deployment_workflow(state):
     # Build and run containers
     container_results = {}
     for role, project_data in projects.items():
-        default_port = 3000 if role == "frontend" else 8000
+        default_port = 5173 if role == "frontend" else 8000
         container_config = {
             "project_path": project_data["path"],
             "port": default_port,

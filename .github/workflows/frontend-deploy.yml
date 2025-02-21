@@ -58,4 +58,4 @@ jobs:
               sudo docker rm frontend
             fi
             # Run the new container
-            sudo docker run -d --restart always -p 3000:3000 --name frontend ${{ secrets.DOCKER_HUB_USERNAME }}/frontend:${{ github.sha }}
+            sudo docker run -d --restart always -p 5173:5173 --name frontend ${{ secrets.DOCKER_HUB_USERNAME }}/frontend:${{ github.sha }}

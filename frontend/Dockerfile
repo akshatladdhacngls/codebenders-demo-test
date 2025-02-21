@@ -3,5 +3,6 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
+RUN if grep -q "vite" package.json; then echo 'CMD ["npm", "run", "dev"]' >> Dockerfile; fi
+RUN if grep -q "react-scripts" package.json; then echo 'CMD ["npm", "start"]' >> Dockerfile; fi
 EXPOSE 3000
-CMD if grep -q 'vite' package.json; then npm run dev; elif grep -q 'react-scripts' package.json; then npm start; fi
