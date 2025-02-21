@@ -80,11 +80,13 @@ def generate_dockerfile_with_openai(project_info: str) -> str:
     if project_type == "frontend":
         prompt = f"""
         Your task is to generate a **valid Dockerfile** for a frontend project named '{project_path}'.
-        
+
         **Rules:**
         - The response must contain **only the Dockerfile content** (no explanations, no markdown formatting).
         - Use **Node.js 18 Alpine** as the base image.
-        - Ensure the app starts with `npm start`.
+        - Analyze `package.json` to determine the correct start command:
+        - If the project uses Vite (`vite` in `devDependencies` or `scripts`), start with `npm run dev`.
+        - If the project uses React (`react-scripts` in `dependencies` or `scripts`), start with `npm start`.
         - The response must start with `FROM node:18-alpine` and contain only valid Docker instructions.
 
         **Example Output (Do NOT return in Markdown format, only the Dockerfile content):**
@@ -94,7 +96,7 @@ def generate_dockerfile_with_openai(project_info: str) -> str:
             RUN npm install
             COPY . .
             EXPOSE 3000
-            CMD ["npm", "start"]
+            CMD ["npm", "run", "dev"]
         """
     else:  # Backend
         server_file_path = os.path.join(project_path, server_file)
