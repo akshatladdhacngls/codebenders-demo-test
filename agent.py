@@ -95,8 +95,8 @@ def generate_dockerfile_with_openai(project_info: str) -> str:
             COPY package*.json ./
             RUN npm install
             COPY . .
+            CMD ["npm", "run", "dev"]  
             EXPOSE 5173
-            CMD ["npm", "run", "dev"]
         """
     else:  # Backend
         server_file_path = os.path.join(project_path, server_file)
@@ -105,7 +105,7 @@ def generate_dockerfile_with_openai(project_info: str) -> str:
         if not file_content:
             print(f"⚠️ Server file {server_file} not found. Using default entry point.")
             entry_point = "main"
-            port = 8000
+            port = 8080
         else:
             entry_point = server_file.replace(".py", "")
             if "run(" in file_content:
@@ -139,11 +139,12 @@ def generate_dockerfile_with_openai(project_info: str) -> str:
         WORKDIR /app
         RUN python -m venv .venv
         ENV PATH="/app/.venv/bin:$PATH"
+        RUN source .venv/bin/activate
         COPY requirements.txt .
         RUN pip install --upgrade pip && pip install -r requirements.txt
         COPY . .
-        EXPOSE {port}
-        CMD ["uvicorn", "{entry_point}:app", "--port", "{port}"]
+        EXPOSE 8080
+        CMD ["uvicorn", "main:app", "--port", "8000"]
         """
 
     response = llm.invoke(prompt)
@@ -223,7 +224,7 @@ def setup_github_actions(project_data: dict) -> str:
     os.makedirs(workflow_dir, exist_ok=True)
     
     is_frontend = os.path.exists(os.path.join(project_path, "package.json"))
-    port_mapping = "5173:5173" if is_frontend else "8000:8000"
+    port_mapping = "5173:5173" if is_frontend else "8080:8080"
     
     # Generate a fixed workflow YAML without using LLM
     workflow_content = f"""name: Build and Deploy {project_name}

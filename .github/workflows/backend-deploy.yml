@@ -58,4 +58,4 @@ jobs:
               sudo docker rm backend
             fi
             # Run the new container
-            sudo docker run -d --restart always -p 8000:8000 --name backend ${{ secrets.DOCKER_HUB_USERNAME }}/backend:${{ github.sha }}
+            sudo docker run -d --restart always -p 8080:8080 --name backend ${{ secrets.DOCKER_HUB_USERNAME }}/backend:${{ github.sha }}
