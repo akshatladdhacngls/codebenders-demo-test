@@ -1,5 +1,7 @@
 FROM python:3.10
 WORKDIR /app
+RUN python -m venv .venv
+RUN /bin/bash -c "source .venv/bin/activate"
 COPY requirements.txt .
 RUN pip install --upgrade pip && pip install -r requirements.txt
 COPY . .
