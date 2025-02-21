@@ -35,7 +35,7 @@ def scan_projects() -> dict:
     """Scans the directory for projects and classifies them as frontend or backend."""
     detected_projects = {}
     excluded_dirs = {".venv", "node_modules", "__pycache__", ".git"}
-    frontend_folder_name = "react-sample-project"
+    frontend_folder_name = "frontend"
     backend_folder_name = "backend"
     folders_to_scan = [frontend_folder_name, backend_folder_name]
 
