@@ -127,15 +127,15 @@ def generate_dockerfile_with_openai(project_info: str) -> str:
 
         **Rules:**
         - The response must contain **only the Dockerfile content** (no explanations, no markdown formatting).
-        - Use **Python 3.10** as the base image.
+        - Use **Python 3.12** as the base image.
         - Create and activate a virtual environment.
         - Assume a valid `requirements.txt` file is already provided.
         - Ensure the application starts using `uvicorn {entry_point}:app --port {port}` if FastAPI is detected.
         - If Flask is detected, start with `flask run --port={port}`.
-        - The response must start with `FROM python:3.10` and contain only valid Docker instructions.
+        - The response must start with `FROM python:3.12` and contain only valid Docker instructions.
 
         **Example Output (Do NOT return in Markdown format, only the Dockerfile content):**
-        FROM python:3.10
+        FROM python:3.12
         WORKDIR /app
         RUN python -m venv .venv
         RUN source .venv/bin/activate

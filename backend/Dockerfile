@@ -1,4 +1,4 @@
-FROM python:3.10
+FROM python:3.12
 WORKDIR /app
 RUN python -m venv .venv
 RUN /bin/bash -c "source .venv/bin/activate"

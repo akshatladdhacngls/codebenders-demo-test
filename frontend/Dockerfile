@@ -4,6 +4,13 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 EXPOSE 3000
-RUN if grep -q vite package*.json; then echo 'CMD ["npm", "run", "dev"]'; else echo 'CMD ["npm", "start"]'; fi > start.sh
-RUN chmod +x start.sh
-CMD ["sh", "start.sh"]
+RUN if grep -q vite package*.json; then \
+    echo "Vite project detected"; \
+    CMD ["npm", "run", "dev"]; \
+elif grep -q react-scripts package*.json; then \
+    echo "React project detected"; \
+    CMD ["npm", "start"]; \
+else \
+    echo "No valid start command found"; \
+    exit 1; \
+fi
