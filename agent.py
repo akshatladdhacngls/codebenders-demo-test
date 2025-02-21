@@ -129,18 +129,18 @@ def generate_dockerfile_with_openai(project_info: str) -> str:
         - The response must contain **only the Dockerfile content** (no explanations, no markdown formatting).
         - Use **Python 3.10** as the base image.
         - Assume a valid `requirements.txt` file is already provided.
-        - Ensure the application starts using `uvicorn {entry_point}:app --host 0.0.0.0 --port {port}` if FastAPI is detected.
-        - If Flask is detected, start with `flask run --host=0.0.0.0 --port={port}`.
+        - Ensure the application starts using `uvicorn {entry_point}:app --port {port}` if FastAPI is detected.
+        - If Flask is detected, start with `flask run --port={port}`.
         - The response must start with `FROM python:3.10` and contain only valid Docker instructions.
 
         **Example Output (Do NOT return in Markdown format, only the Dockerfile content):**
         FROM python:3.10
         WORKDIR /app
         COPY requirements.txt .
-        RUN pip install --no-cache-dir -r requirements.txt
+        RUN pip install --upgrade pip && pip install -r requirements.txt
         COPY . .
         EXPOSE {port}
-        CMD ["uvicorn", "{entry_point}:app", "--host", "0.0.0.0", "--port", "{port}"]
+        CMD ["uvicorn", "{entry_point}:app", "--port", "{port}"]
         """
 
     response = llm.invoke(prompt)
