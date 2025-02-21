@@ -2,7 +2,6 @@ from pydantic import BaseModel, EmailStr, Field
 from datetime import date
 from typing import Optional, List
 
-# User Schemas
 class UserBase(BaseModel):
     name: str
     email: EmailStr
@@ -13,12 +12,10 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     user_id: int
-    created_at: Optional[date] = None
 
     class Config:
         orm_mode = True
 
-# Flight Schemas
 class FlightBase(BaseModel):
     flight_number: str
     airline: str
@@ -29,20 +26,22 @@ class FlightBase(BaseModel):
     travel_class: str
     available_seats: int
 
+class FlightCreate(FlightBase):
+    pass
+
 class Flight(FlightBase):
     flight_id: int
 
     class Config:
         orm_mode = True
 
-# Booking Schemas
 class BookingBase(BaseModel):
     user_id: int
     flight_id: int
     fare_id: int
     adults: int = Field(gt=0)
-    children: Optional[int] = 0
-    infants: Optional[int] = 0
+    children: int = Field(ge=0)
+    infants: int = Field(ge=0)
     booking_date: date
 
 class BookingCreate(BookingBase):
@@ -54,10 +53,12 @@ class Booking(BookingBase):
     class Config:
         orm_mode = True
 
-# Fare Schemas
 class FareBase(BaseModel):
     fare_type: str
     description: str
+
+class FareCreate(FareBase):
+    pass
 
 class Fare(FareBase):
     fare_id: int
@@ -65,7 +66,7 @@ class Fare(FareBase):
     class Config:
         orm_mode = True
 
-# Error Schema
+# Error Response Schema
 class ErrorResponse(BaseModel):
     code: int
     message: str
