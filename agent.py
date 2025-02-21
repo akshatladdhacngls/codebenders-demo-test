@@ -138,7 +138,7 @@ def generate_dockerfile_with_openai(project_info: str) -> str:
         FROM python:3.12
         WORKDIR /app
         RUN python -m venv .venv
-        RUN source .venv/bin/activate
+        ENV PATH="/app/.venv/bin:$PATH"
         COPY requirements.txt .
         RUN pip install --upgrade pip && pip install -r requirements.txt
         COPY . .
