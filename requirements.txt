@@ -1,0 +1,10 @@
+docker
+langchain
+langgraph
+langchain_openai
+python-dotenv
+openai
+tornado
+boto3
+PyGithub
+paramiko 
